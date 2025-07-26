@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<label for="username">Username: </label> <input id="username" type="text">
+<br>
+<label for="password">Password: </label> <input id="password" type="password">
+<br>
+<button onclick="login()">Login</button>
+<span id="error">error place</span>
+
+<script>
+    function login(){
+        const u = document.getElementById('username').value;
+        const p = document.getElementById('password').value;
+        // Call the exposed pageController for login
+        if (window.pageController.login(u, p)) {
+            window.pageController.navigateTo("/ui/servers.html");
+        }
+    }
+</script>
+</body>
+</html>

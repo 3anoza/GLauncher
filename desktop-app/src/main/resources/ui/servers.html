@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Well come to servers page!
+<div>
+    <button onclick="window.pageController.navigateTo('/ui/account.html')">Account</button>
+</div>
+<br>
+<span>Servers List: </span>
+<div id="serverGrid"></div>
+<script>
+    function renderServers(serverList) {
+        // serverList is an array of objects (if called as shown above)
+        const grid = document.getElementById('serverGrid');
+        grid.innerHTML = ''; // clear previous
+        let i = 0;
+        serverList.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'server-card';
+            card.innerHTML = `
+      <img src="${s.iconUrl}" alt="icon" width="64">
+      <div><b>Version: ${s.version}</b></div>
+      <div>Description: ${s.description}</div>
+      <div>Online: ${s.online}/${s.maxOnline} </div>
+      <button onclick="window.pageController.onPlay('${i}')">Play</button>
+      <button onclick="editSettings('${i}')">Settings</button>
+    `;
+            grid.appendChild(card);
+            i = i + 1;
+        });
+    }
+
+    function editSettings(index) {
+        window.pageController.onEditSettings(index);
+        window.pageController.navigateTo("/ui/settings.html")
+    }
+</script>
+<style>
+    #serverGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+        gap: 16px;
+    }
+    .server-card {
+        border: 1px solid #ccc;
+        padding: 8px;
+        border-radius: 8px;
+        background: #fff;
+        text-align: center;
+        box-shadow: 2px 2px 8px #0002;
+    }
+</style>
+</body>
+</html>

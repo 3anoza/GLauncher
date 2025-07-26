@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+Well come to account page!
+<div>
+    <span id="username">UserName</span>
+    <div>
+        <img src="" alt="avatar">
+        <div id="avatar"></div>
+        <button onclick="window.pageController.openFileDialog('avatar')">Choose file</button>
+    </div>
+    <div>
+        <span>Skin Viewer</span>
+        <div>
+            <img src="" alt="skin">
+            <div id="skin"></div>
+            <button onclick="window.pageController.openFileDialog('skin')">Choose file</button>
+            <div>
+                <button>up</button>
+                <button>left</button>
+                <button>right</button>
+                <button>down</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function onFileChosen(path, holder) {
+        document.getElementById(holder).innerText = "File: " + path;
+        // Optionally validate file via Java:
+        let width;
+        let height;
+
+        if(holder === "avatar") {
+            width = 128;
+            height = 128;
+        } else{
+            width = 64;
+            height = 64;
+        }
+
+        if (window.pageController && !window.pageController.validateFile(path, width, height)) {
+            document.getElementById(holder).innerText = "Invalid file!";
+        }
+    }
+</script>
+<button onclick="window.pageController.navigateTo('/ui/servers.html')">Go to servers</button>
+</body>
+</html>
