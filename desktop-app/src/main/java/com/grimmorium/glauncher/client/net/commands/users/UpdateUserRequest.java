@@ -1,14 +1,18 @@
 package com.grimmorium.glauncher.client.net.commands.users;
 
-import com.grimmorium.glauncher.client.interfaces.IHttpRequest;
+import com.grimmorium.glauncher.contracts.entities.AuthToken;
+import com.grimmorium.glauncher.contracts.interfaces.IHttpRequest;
 import net.bytebuddy.utility.nullability.MaybeNull;
 
 public class UpdateUserRequest implements IHttpRequest<UserResponse> {
-    public String name;
+    public AuthToken authToken;
 
     @MaybeNull
-    public byte[] icon;
+    public byte[] avatar;
 
     @MaybeNull
     public byte[] skin;
+
+    @MaybeNull
+    public byte[] cape;
 }

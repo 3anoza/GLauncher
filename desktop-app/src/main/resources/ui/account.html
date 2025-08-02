@@ -27,6 +27,21 @@ Well come to account page!
             </div>
         </div>
     </div>
+    <div>
+        <span>Cape Viewer</span>
+        <div>
+            <img src="" alt="cape">
+            <div id="cape"></div>
+            <button onclick="window.pageController.openFileDialog('cape')">Choose file</button>
+            <div>
+                <button>up</button>
+                <button>left</button>
+                <button>right</button>
+                <button>down</button>
+            </div>
+        </div>
+    </div>
+    <button onclick="uploadFiles()">Save Changes</button>
 </div>
 <script>
     function onFileChosen(path, holder) {
@@ -35,17 +50,31 @@ Well come to account page!
         let width;
         let height;
 
-        if(holder === "avatar") {
-            width = 128;
-            height = 128;
-        } else{
-            width = 64;
-            height = 64;
+        switch (holder) {
+            case "avatar":
+                width = 128;
+                height = 128;
+                break;
+            case "skin":
+                width = 64;
+                height = 64;
+                break;
+            case "cape":
+                width = 32;
+                height = 64;
+                break;
+            default: break;
         }
 
         if (window.pageController && !window.pageController.validateFile(path, width, height)) {
             document.getElementById(holder).innerText = "Invalid file!";
         }
+    }
+
+    function uploadFiles() {
+        window.pageController.uploadFile(document.getElementById('avatar').innerText);
+        window.pageController.uploadFile(document.getElementById('skin').innerText);
+        window.pageController.uploadFile(document.getElementById('cape').innerText);
     }
 </script>
 <button onclick="window.pageController.navigateTo('/ui/servers.html')">Go to servers</button>

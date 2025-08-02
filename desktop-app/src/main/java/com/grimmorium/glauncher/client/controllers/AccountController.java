@@ -1,25 +1,30 @@
 package com.grimmorium.glauncher.client.controllers;
 
-import com.grimmorium.glauncher.client.JavaBridge;
+import com.grimmorium.glauncher.client.HtmlController;
 import com.grimmorium.glauncher.client.LauncherProfile;
+import com.grimmorium.glauncher.client.net.commands.users.UpdateUserRequest;
+import com.grimmorium.glauncher.client.net.commands.users.UserResponse;
+import com.grimmorium.glauncher.contracts.enums.HttpMethod;
+import com.grimmorium.glauncher.core.net.services.HttpLauncherClient;
 import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.util.concurrent.CompletableFuture;
 
-public class AccountController extends JavaBridge {
+public class AccountController extends HtmlController {
 
     public AccountController(WebEngine engine) {
         super(engine);
         Platform.runLater(() ->
                 engine.executeScript(" document.getElementById('username').innerText = \"Username: "
-                        + toJSString(LauncherProfile.mockUser.name) + "\";")
+                        + toJSString("NickName_NickName") + "\";")
         );
     }
 
-    public void openFileDialog(String nameHolder) {
+    public void openFileDialog(String holderName) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select image file");
 
@@ -27,23 +32,61 @@ public class AccountController extends JavaBridge {
         fileChooser.getExtensionFilters().setAll(pngFilter);
 
         File selectedFile = fileChooser.showOpenDialog(null);
-        System.out.println("Holder " + nameHolder);
+        System.out.println("Holder " + holderName);
         if (selectedFile != null) {
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             Platform.runLater(() ->
                     engine.executeScript("window.onFileChosen(" +
-                            toJSString(selectedFile.getAbsolutePath()) + ", " + toJSString(nameHolder) + ")")
+                            toJSString(selectedFile.getAbsolutePath()) + ", " + toJSString(holderName) + ")")
             );
         }
     }
 
-    public boolean validateFile(String filePath, int maxWidth, int maxHeight) throws IOException {
-        int width = 128;
-        int height = 128;
-        return width <= maxWidth && height <= maxHeight;
+    public void loadImage(String filePath, String holderName) {
+        File file = new File(filePath);
+        if (!file.exists()) return;
+        String absolutePath = file.getAbsolutePath();
+        Platform.runLater(() -> {
+            engine.executeScript("document.getElementById("+ toJSString(holderName)
+                    +").setAttribute(\"src\", "+ toJSString(absolutePath) + ");");
+        });
     }
 
-    public boolean uploadFile(String filePath) {
+    public boolean uploadFile(String filePath, String holderName) {
+        File file = new File(filePath);
+        if (!file.exists()) return false;
+        UpdateUserRequest request = new UpdateUserRequest();
+        request.authToken = LauncherProfile.authToken;
+
+        try{
+            switch (holderName) {
+                case "avatar":
+                    request.avatar = Files.readAllBytes(file.toPath());
+                    break;
+                case "skin":
+                    request.skin = Files.readAllBytes(file.toPath());
+                    break;
+                case "cape":
+                    request.cape = Files.readAllBytes(file.toPath());
+                    break;
+                default: return false;
+            }
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+
+        CompletableFuture<UserResponse> future = HttpLauncherClient.getInstance()
+                .sendRequestAsync(endpointAddress, HttpMethod.POST, request);
+
+        UserResponse response = future.join();
+
+        if (response == null) return false;
+
+
         return true;
+    }
+
+    private void loadUserInfo(UserResponse userInfo) {
     }
 }

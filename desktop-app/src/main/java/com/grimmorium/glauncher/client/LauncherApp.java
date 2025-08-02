@@ -41,7 +41,7 @@ public class LauncherApp extends Application {
                         window.setMember("pageController", new ServerSettingsController(engine));
                         break;
                     default:
-                        window.setMember("launcher", new JavaBridge(engine));
+                        window.setMember("launcher", new HtmlController(engine));
                 }
             }
 

@@ -3,6 +3,9 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
+group = 'com.grimmorium.glauncher'
+version = '0.1'
+
 repositories {
     mavenCentral()
 }
@@ -11,6 +14,8 @@ dependencies {
     implementation "org.openjfx:javafx-controls:17.0.8"
     implementation "org.openjfx:javafx-web:17.0.8"
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+    implementation project(':core')
+    implementation project(':contracts')
 }
 
 javafx {

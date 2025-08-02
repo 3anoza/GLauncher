@@ -1,0 +1,6 @@
+{
+  "Readme": "Add to list below any version with netty protocol. If you want to make them supported in launcher server. You can your version data here: https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Protocol_version_numbers",
+  "releases": [
+    {"version": "1.7.10", "protocol": "5"}
+  ]
+}

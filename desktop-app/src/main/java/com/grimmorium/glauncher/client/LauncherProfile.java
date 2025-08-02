@@ -1,7 +1,9 @@
 package com.grimmorium.glauncher.client;
 
-import com.grimmorium.glauncher.client.net.commands.users.UserResponse;
+import com.grimmorium.glauncher.contracts.entities.AuthToken;
 
 public class LauncherProfile {
-    public static UserResponse mockUser;
+    private LauncherProfile() {}
+
+    public static AuthToken authToken;
 }

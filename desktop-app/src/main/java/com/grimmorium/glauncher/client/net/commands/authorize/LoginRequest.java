@@ -1,6 +1,6 @@
 package com.grimmorium.glauncher.client.net.commands.authorize;
 
-import com.grimmorium.glauncher.client.interfaces.IHttpRequest;
+import com.grimmorium.glauncher.contracts.interfaces.IHttpRequest;
 
 public class LoginRequest implements IHttpRequest<LoginResponse> {
     public String username;
